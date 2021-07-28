@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/flv.js/1.6.0/flv.min.js"></script>
+  <style>
+    video {
+      width: 80%;
+    }
+  </style>
+</head>
+<body>
+  <video class="demo-video" id="video" autoplay controls></video>
+  <script>
+    if (flvjs.isSupported()) {
+        let video = document.getElementById("video");
+        if (video) {
+          const url = window.location.search.slice(5);
+          this.player = flvjs.createPlayer({
+            type: "flv",
+            isLive: true,
+            url: `ws://localhost:8888/rtsp?url=${url}`
+            // url: "https://mister-ben.github.io/videojs-flvjs/bbb.flv"
+          });
+          this.player.attachMediaElement(video);
+          try {
+            this.player.load();
+            this.player.play();
+          } catch (error) {
+            console.log(error);
+          };
+        }
+      }
+  </script>
+</body>
+</html>
