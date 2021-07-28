@@ -34,6 +34,49 @@
           };
         }
       }
+
+      visibilitychange();
+
+      function visibilitychange() {
+          var hidden;
+          var visibilityChange;
+          var visible;
+          var state;
+          if (typeof document.hidden !== "undefined") {
+            hidden = "hidden";
+            visibilityChange = "visibilitychange";
+            visible = "visible";
+            state = 'visibilityState';
+          } else if (typeof document.mozHidden !== "undefined") {
+            hidden = "mozHidden";
+            visibilityChange = "mozvisibilitychange";
+            visible = "mozVisibilityState";
+            state = 'mozVisibilityState';
+          } else if (typeof document.msHidden !== "undefined") {
+            hidden = "msHidden";
+            visibilityChange = "msvisibilitychange";
+            visible = "msVisibilityState";
+            state = 'msVisibilityState';
+          } else if (typeof document.webkitHidden !== "undefined") {
+            hidden = "webkitHidden";
+            visibilityChange = "webkitvisibilitychange";
+            visible = "webkitVisibilityState";
+          }
+          //标签页切换媒体播放时间重置
+          document.addEventListener(visibilityChange, function () {
+            if (document[state] === visible) {
+              let videoEleObj = document.getElementsByTagName('video')
+              for (let video in videoEleObj) {
+                let buffered = videoEleObj[video].buffered;
+                if (buffered && buffered.length > 0) {
+                  videoEleObj[video].currentTime = buffered.end(0) - 0.5
+                }
+              }
+            } else if (document[state] === hidden) {
+
+            }
+          }, false)
+        }
   </script>
 </body>
 </html>
